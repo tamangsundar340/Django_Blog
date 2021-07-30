@@ -1,0 +1,138 @@
+{% extends 'clienttemplate/base.html' %}
+{% load static %}
+{% block body %}
+<!--================ Hero sm Banner start =================-->
+<section class="mb-30px">
+    <div class="">
+        <div class="hero-banner hero-banner--sm">
+            <div class="hero-banner__content">
+                <h1>Blog details</h1>
+                <nav aria-label="breadcrumb" class="banner-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blog Details {{object.count}}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================ Hero sm Banner end =================-->
+<!--================ Start Blog Post Area =================-->
+<section class="blog-post-area section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="main_blog_details">
+                    <img class="img-fluid" src="{{blogdetail.thumbnail.url}}" alt=""
+                        style="max-height: 300px !important; object-fit: cover; width: 100%;">
+                    <a href="#">
+                        <h4>{{blogdetail.title}}</h4>
+                    </a>
+                    <div class="user_details">
+                        <div class="float-left">
+                            <a href="#">{{blogdetail.categories.title}}</a>
+                        </div>
+                        <div class="float-right mt-sm-0 mt-3">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p>{{blogdetail.author.username}}</p>
+                                    <p>{{blogdetail.timestamp_pretty}}</p>
+                                </div>
+                                <div class="d-flex">
+                                    <!-- <img width="42" height="42" src="" alt=""> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{blogdetail.content|safe}}</p>
+                </div>
+                <div>
+                    <hr />
+                    <div class="comments-are">
+                        <h5>{{comments.count}} Comments</h5>
+                        {% for comment in comments %}
+                        <div class="desc">
+                            <h6><a href="" class="text-dark">{{comment.name}}</a></h6>
+                            <small class="date">{{comment.timestamp_pretty}} </small>
+                            <p class="comment">
+                                {{comment.text}}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <blockquote>
+                        <div class="comment-form">
+                            <h4>Leave a Reply</h4>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                                style="display: none;" id="showmessage">
+                                <span class="font-weight-bold" id="showmessage"></span>
+                                <span area-hidden="true" class="close font-weight-bold" data-dismiss="alert"
+                                    aria-label="close" style="cursor: pointer;">&times;</span>
+                            </div>
+                            <form id="form">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="name" placeholder="name"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'name'" name="name"
+                                        >
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control mb-10" rows="5" placeholder="Messege"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"
+                                        name="text" id="text"></textarea>
+                                </div>
+                                <button type="submit" class="button submit_btn">Post Comment</button>
+                            </form>
+                        </div>
+                    </blockquote>
+
+                    <hr />
+                </div>
+            </div>
+            {% block sidebar %}{% include 'clienttemplate/sidebar.html' %}{% endblock sidebar%}
+        </div>
+        <!-- End Blog Post Siddebar -->
+    </div>
+
+</section>
+<!--================ End Blog Post Area =================-->
+<script>
+    form.addEventListener('submit', function (e) {
+        e.preventDefault()
+
+        name = $('#name').val(),
+        text = $('#text').val(),
+        console.log("******************************")
+        console.log(name)
+        console.log(text)
+        console.log("******************************")
+        csrfmiddlewaretoken = '{{csrf_token}}'
+
+        if (name == "" || text == "") {
+            $("#showmessage").text("Both name and comment is required")
+            $("#showmessage").show()
+            setTimeout(function () { $('#showmessage').hide(); }, 3000);
+        } else {
+            my_data = { name: name, text: text, csrfmiddlewaretoken: csrfmiddlewaretoken };
+            $.ajax({
+                method: 'POST',
+                data: my_data,
+
+                success: function (data) {
+                    if (data.status == 'ok') {
+                        location.reload()
+                        $("form")[0].reset();
+                    } if (data.status == 'error') {
+                        $("#showmessage").text("Something went wrong !")
+                        $("#showmessage").show()
+                        setTimeout(function () { $('#showmessage').hide(); }, 3000);
+                        $("form")[0].reset();
+                    }
+                }
+
+            })
+        }
+    })
+</script>
+{% endblock %}

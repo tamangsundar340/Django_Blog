@@ -1,0 +1,109 @@
+{% load static %}
+{% block sidebar %}
+<!-- Start Blog Post Siddebar -->
+<div class="col-lg-4 sidebar-widgets">
+  <div class="widget-wrap">
+
+
+      <form id="form" method="POST">
+        {% csrf_token %}
+        <h4 class="single-sidebar-widget__title">Newsletter</h4>
+        <div class="single-sidebar-widget newsletter-widget">
+          <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;" id="showmessage">
+            <span class="font-weight-bold" id="showmessage"></span>
+            <span area-hidden="true" class="close font-weight-bold" data-dismiss="alert" aria-label="close"
+              style="cursor: pointer;">&times;</span>
+          </div>
+    
+        <div class="form-group mt-30">
+          <div class="col-autos">
+            <input type="email" class="form-control" name="emai" id="email" placeholder="Enter email"
+              onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email'">
+          </div>
+        </div>
+        <button class="bbtns d-block mt-20 w-100" type="submit">Subcribe</button>
+      </form>
+
+    </div>
+    <div class="single-sidebar-widget post-category-widget">
+      <h4 class="single-sidebar-widget__title">Catgory</h4>
+      <ul class="cat-list mt-20">
+        {% for cate in categories %}
+        <li>
+          <a href="{% url 'core:category' slug=cate.slug %}" class="d-flex justify-content-between">
+            <p>
+              {{cate.title}}
+              {% if cate.count_post < 10 %} (0{{cate.count_post}}) {% else %} {{cate.count_post}} {% endif %} </p>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="single-sidebar-widget popular-post-widget">
+      <h4 class="single-sidebar-widget__title">Popular Post</h4>
+      <div class="popular-post-list">
+        {% for trendingblog in trending_blogs %}
+        <div class="single-post-list">
+          <div class="thumb">
+            <img class="card-img rounded-0" src="{{trendingblog.thumbnail.url}}" alt=""
+              style="max-height: 130px !important; object-fit: cover;">
+            <ul class="thumb-info">
+              <li><a href="#">{{trendingblog.author.username}}</a></li>
+              <li><a href="#">{{trendingblog.timestamp_pretty}}</a></li>
+            </ul>
+          </div>
+          <div class="details mt-20">
+            <a href="{{trendingblog.get_absoulate_url}}">
+              <h6>{{trendingblog.title}}</h6>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  form.addEventListener('submit', function (e) {
+    e.preventDefault()
+    email = $('#email').val(),
+    console.log(email)
+    csrfmiddlewaretoken = '{{csrf_token}}'
+
+    if (email == "") {
+      $("#showmessage").text("Please fill required form")
+      $("#showmessage").show()
+      setTimeout(function () { $('#showmessage').hide(); }, 3000);
+    } else {
+      my_data = { email: email, csrfmiddlewaretoken: csrfmiddlewaretoken };
+      $.ajax({
+        method: 'POST',
+        url: '/subscribe/',
+        data: my_data,
+
+        success: function (data) {
+          if (data.status == 'ok') {
+            $("#showmessage").text("Thank you for your subscription!")
+            $("#showmessage").show()
+            setTimeout(function () { $('#showmessage').hide(); }, 3000);
+            $("form")[0].reset();
+          } if (data.status == 'error') {
+            $("#showmessage").text("Something went wrong, unable to subscribe !")
+            $("#showmessage").show()
+            setTimeout(function () { $('#showmessage').hide(); }, 3000);
+            $("form")[0].reset();
+          }
+          if (data.status == 'already') {
+            $("#showmessage").text("You are already subscribed!")
+            $("#showmessage").show()
+            setTimeout(function () { $('#showmessage').hide(); }, 3000);
+            $("form")[0].reset();
+          }
+        }
+
+      })
+    }
+  })
+</script>
+{% endblock sidebar %}

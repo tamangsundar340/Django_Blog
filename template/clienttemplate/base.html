@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title%}Blog{% endblock %}{% block extra_title%}{% endblock %}</title>
+    <link rel="icon" href="{% static 'clientstatic/img/Fevicon.png' %}" type="image/png">
+
+    <link rel="stylesheet" href="{% static 'clientstatic/vendors/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'clientstatic/vendors/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'clientstatic/vendors/themify-icons/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'clientstatic/vendors/linericon/style.css' %}">
+    <link rel="stylesheet" href="{% static 'clientstatic/vendors/owl-carousel/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'clientstatic/vendors/owl-carousel/owl.carousel.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'clientstatic/css/style.css' %}">
+    </head>
+    <body>
+    <!--================Header Menu Area =================-->
+    <header class="header_area">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container box_1620">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand logo_h" href=""><img src="" alt=""></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+            <ul class="nav navbar-nav menu_nav  navbar-left justify-content-center">
+                <li class="nav-item active"><a class="nav-link" href="{% url 'core:home' %}">Home</a></li> 
+                <li class="nav-item"><a class="nav-link" href="{% url 'core:bloglist' %}">BlogList</a></li> 
+                <li class="nav-item"><a class="nav-link" href="{% url 'core:contact' %}">Contact us</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right navbar-social">
+                <li><a href="{{siteInfo.facebook}}"><i class="ti-facebook"></i></a></li>
+                <li><a href="{{siteInfo.github}}"><i class="ti-github"></i></a></li>
+                <li><a href="{{siteInfo.instagram}}"><i class="ti-instagram"></i></a></li>
+                <li><a href="{{siteInfo.youtube}}"><i class="fab fa-youtube"></i></a></li>
+                {% comment %}
+                <!-- {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'account_logout' %}" class="nav-link waves-effect">
+                        <span class="clearfix d-none d-sm-inline-block"> Logout </span>
+                    </a>
+                </li>
+                {% else %}
+                <ul class="navbar-nav nav-flex-icons ml-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'account_login' %}" class="nav-link waves-effect">
+                            <span class="clearfix d-none d-sm-inline-block"> Login </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'account_signup' %}" class="nav-link waves-effect">
+                            <span class="clearfix d-none d-sm-inline-block"> Signup </span>
+                        </a>
+                    </li>
+                </ul>
+                {% endif %} -->
+                {% endcomment %}
+            </ul>
+            </div> 
+        </div>
+        </nav>
+    </div>
+    </header>
+    <!--================Header Menu Area =================-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% block body%}
+    {% endblock %}
+    {% block extra_body%}
+    {% endblock %}
+    <!--================ Start Footer Area =================-->
+    <footer class="footer-area section-padding">
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-3  col-md-6 col-sm-6">
+            <div class="single-footer-widget">
+            <h6>About Us</h6>
+            <p>
+                {{siteInfo.about_us|truncatechars:100}}
+            </p>
+            </div>
+        </div>
+        <div class="col-lg-4  col-md-6 col-sm-6">
+            <div class="single-footer-widget">
+            <h6>Newsletter</h6>
+            <p>Stay update with our latest</p>
+            <div class="" id="mc_embed_signup">
+                <form method="POST" class="form-inline" action="">
+                    {% csrf_token %}
+                    <div class="d-flex flex-row">
+                        <input class="form-control" name="email" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+                        required="" type="email">
+                        <button class="click-btn btn btn-default">
+                                <span class="lnr lnr-arrow-right"></span>
+                        </button>
+                    </div>
+                    <div class="info"></div>
+                </form>
+            
+            </div>
+            </div>
+        </div>
+        <div class="col-lg-3  col-md-6 col-sm-6">
+            <div class="single-footer-widget mail-chimp">
+            <h6 class="mb-20">Instragram Feed</h6>
+            <ul class="instafeed d-flex flex-wrap">
+                <li><img src="{% static 'clientstatic/img/instagram/i1.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i2.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i3.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i4.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i5.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i6.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i7.jpg' %}" alt=""></li>
+                <li><img src="{% static 'clientstatic/img/instagram/i8.jpg' %}" alt=""></li>
+            </ul>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="single-footer-widget">
+            <h6>Follow Us</h6>
+            <p>Let us be social</p>
+            <div class="footer-social d-flex align-items-center">
+                <a href="{{siteInfo.facebook}}">
+                <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="{{siteInfo.twitter}}">
+                <i class="fab fa-twitter"></i>
+                </a>
+                <a href="{{siteInfo.github}}">
+                <i class="fab fa-github"></i>
+                </a>
+                <a href="{{siteInfo.youtube}}">
+                <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+        <p class="footer-text m-0">
+            Copyright &copy; {% now 'Y' %} | Sundar Tamang
+        </p>
+        </div>
+    </div>
+    </footer>
+    <!--================ End Footer Area =================-->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="{% static 'clientstatic/vendors/jquery/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'clientstatic/vendors/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'clientstatic/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'clientstatic/js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'clientstatic/js/mail-script.js' %}"></script>
+    <script src="{% static 'clientstatic/js/main.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".comment-reply-btn").click(function(event){
+                event.preventDefault();
+                $(this).parent().next(".comment-reply").fadeToggle();
+            })
+        })
+        
+    </script>
+    </body>
+    </html>

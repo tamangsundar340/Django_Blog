@@ -1,0 +1,154 @@
+{% extends 'clienttemplate/base.html' %}
+{% load static %}
+{% block body %}
+<main class="site-main">
+  <!--================Hero Banner start =================-->
+  <section class="mb-30px">
+    <div class="">
+      <div class="hero-banner">
+        <div class="hero-banner__content">
+          <h3>By Sundar Tamang</h3>
+          <h1>{{siteInfo.title}}</h1>
+          <h4>{% now 'M' %}, {% now 'Y' %}</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================Hero Banner end =================-->
+  <!--================ Blog slider start =================-->
+  <!-- <h1 class="text-center mb-4">Latest Blog</h1>
+    <section>
+      <div class="container">
+        <div class="owl-carousel owl-theme blog-slider">
+          <div class="card blog__slide text-center">
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{% static 'img/blog/blog-slider/blog-slide1.png' %}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="#">Fashion</a>
+              <h3><a href="#">New york fashion week's continued the evolution</a></h3>
+              <p>2 days ago</p>
+            </div>
+          </div>
+          <div class="card blog__slide text-center">
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{% static 'img/blog/blog-slider/blog-slide2.png' %}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="#">Fashion</a>
+              <h3><a href="#">New york fashion week's continued the evolution</a></h3>
+              <p>2 days ago</p>
+            </div>
+          </div>
+          <div class="card blog__slide text-center">
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{% static 'img/blog/blog-slider/blog-slide3.png' %}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="#">Fashion</a>
+              <h3><a href="#">New york fashion week's continued the evolution</a></h3>
+              <p>2 days ago</p>
+            </div>
+          </div>
+          <div class="card blog__slide text-center">
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{% static 'img/blog/blog-slider/blog-slide1.png' %}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="#">Fashion</a>
+              <h3><a href="#">New york fashion week's continued the evolution</a></h3>
+              <p>2 days ago</p>
+            </div>
+          </div>
+          <div class="card blog__slide text-center">
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{% static 'img/blog/blog-slider/blog-slide2.png' %}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="#">Fashion</a>
+              <h3><a href="#">New york fashion week's continued the evolution</a></h3>
+              <p>2 days ago</p>
+            </div>
+          </div>
+          <div class="card blog__slide text-center">
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{% static 'img/blog/blog-slider/blog-slide3.png' %}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="#">Fashion</a>
+              <h3><a href="#">New york fashion week's continued the evolution</a></h3>
+              <p>2 days ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+  <!--================ Blog slider end =================-->
+
+  <!--================ Start Blog Post Area =================-->
+  <section class="blog-post-area section-margin mt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          {{blogComment.count_post}}
+          {% for blogs in bloglist %}
+          <div class="single-recent-blog-post">
+            <div class="thumb">
+              <img class="img-fluid" src="{{blogs.thumbnail.url}}" alt=""
+                style="max-height: 350px; width: 100%; object-fit: cover;">
+              <ul class="thumb-info">
+                <li><a href="{{blogs.get_absoulate_url}}"><i class="ti-user"></i>{{blogs.author.username}}</a></li>
+                <li><a href="{{blogs.get_absoulate_url}}"><i class="ti-notepad"></i>{{blogs.timestamp_pretty}}</a></li>
+                <li><a href="{{blogs.get_absoulate_url}}"><i class="ti-themify-favicon"></i>{{blogs.comment_count}} Comments</a></li>
+              </ul>
+            </div>
+            <div class="details mt-20">
+              <a href="{{blogs.get_absoulate_url}}">
+                <h3>{{blogs.title}}</h3>
+              </a>
+              <p class="tag-list-inline">Tag: {{blogs.categories.title}}<a href="#"></a></p>
+              <p>{{blogs.overview|safe}}</p>
+              <a class="button" href="{{blogs.get_absoulate_url}}">Read More <i class="ti-arrow-right"></i></a>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="row">
+            <div class="col-lg-12">
+              <nav class="blog-pagination justify-content-center d-flex">
+                {% if is_paginated %}
+                <ul class="pagination">
+                  {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                      <span aria-hidden="true">
+                        <i class="ti-angle-left"></i>
+                      </span>
+                    </a>
+                  </li>
+                  {% endif %}
+                  <li class="page-item active"><a href="" class="page-link">Page {{ page_obj.number }} of {{page_obj.paginator.num_pages }}.</a></li>
+                  {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
+                      <span aria-hidden="true">
+                        <i class="ti-angle-right"></i>
+                      </span>
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
+                {% else %}
+                <p>File not yet available</p>
+                {% endif %}
+              </nav>
+            </div>
+          </div>
+        </div>
+        {% block sidebar %}{% include 'clienttemplate/sidebar.html' %}{% endblock sidebar%}
+      </div>
+    </div>
+  </section>
+  <!--================ End Blog Post Area =================-->
+</main>
+
+{% endblock %}
